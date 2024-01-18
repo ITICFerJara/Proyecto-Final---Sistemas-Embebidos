@@ -1,18 +1,4 @@
-/*	PASOS PARA CORRER PLATFORMIO
-	* sudo apt-get update
-	* sudo apt-get install python3-pip
-	* pip3 install --user pipenv
-	* mkdir mi_proyecto_platformio
-	* cd mi_proyecto_platformio
-	* pipenv install platformio
-	* pipenv shell
-	* platformio init --board uno
-	* platformio run 
-	* platformio run --target upload
-	* platformio lib install "Adafruit GFX Library"
-	* platformio lib install "MD_MAX72XX"
-	* platformio update
-*/
+//Incluye las bibliotecas necesarias para el programa.
 #include<Arduino.h>
 #include<SPI.h>
 #include<Adafruit_GFX.h>
@@ -23,18 +9,24 @@
 //Din - Mosi (Pin 11)
 //Cs  - SS (Pin 10)
 //Clk - Sck (Pin 13)
- 
+
+//Se definen las constantes para el número de pantallas horizontales y verticales. 
 const int pinCS = 10;
 const int numberOfHorizontalDisplays = 8;
 const int numberOfVerticalDisplays = 1;
- 
+
+//Se crea un objeto matrix, utilizando las constantes declaradas anteriormente
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
+//Determinar la velocidad a la que se realiza el desplazamiento de texto.
 const int wait = 50; // Velocidad a la que realiza el scroll
- 
+
+//Representa el ancho de cada carácter en la fuente más el espacio adicional 
 const int spacer = 1;
 const int width = 5 + spacer; // Ancho de la fuente a 5 pixeles
- 
+
+//Se inicia la comunicación serial y se configura la 
+//intensidad del brillo de la matriz LED. También se establece la posición y rotación de cada pantalla individual.
 void setup(){
    Serial.begin(9600);
    matrix.setIntensity(1); // Ajustar el brillo entre 0 y 15
@@ -56,8 +48,9 @@ void setup(){
    matrix.setRotation(6, 1);    // Posición del display
    matrix.setRotation(7, 1);    // Posición del display
    matrix.setRotation(8, 1);    // Posición del display
-}
- 
+}//Fin void setup
+
+//Lee datos de la comunicación serial y realiza un efecto de desplazamiento de texto en la matriz LED.
 void loop(){
    String cadena = "Sistemas Embebidos - I.S.C. Leonardo Valdes Arteaga";
    long int time = millis();
@@ -78,5 +71,5 @@ void loop(){
       }
       matrix.write(); // Muestra loscaracteres
       delay(wait);
-   }
-}
+   }//Fin ciclo for
+}//Fin void loop()
